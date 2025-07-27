@@ -2,7 +2,7 @@ import axios from 'axios'
 
 // API base configuration
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api',
+  baseURL: 'https://https-github-com-siddiquealikhan-vendor.onrender.com/api',
   timeout: 10000,
 })
 
