@@ -34,7 +34,8 @@ import Terms from './pages/Terms';
 import { AuthProvider, useAuth } from './contexts/AuthContext'
 
 // API Configuration
-axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api'
+// Remove or update default axios baseURL to use deployed backend
+axios.defaults.baseURL = 'https://https-github-com-siddiquealikhan-vendor.onrender.com/api'
 
 // Add auth token to requests
 axios.interceptors.request.use((config) => {

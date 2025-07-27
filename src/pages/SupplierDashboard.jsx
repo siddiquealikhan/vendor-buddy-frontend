@@ -152,13 +152,8 @@ const SupplierDashboard = () => {
         description: `Fresh ${newProduct.name} supplied by ${newProduct.supplierName || user?.name || "Supplier"}`
       };
 
-      // Use direct axios call to match the exact endpoint structure
-      const token = localStorage.getItem('token');
-      await axios.post('http://localhost:8080/api/products', productData, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
+      // Use productsAPI instead of direct axios call
+      await productsAPI.create(productData);
 
       // Invalidate queries to refetch data
       queryClient.invalidateQueries(['products', 'supplier', user?.id]);
@@ -190,12 +185,7 @@ const SupplierDashboard = () => {
   // Add a direct API call to get all products from MongoDB
   const fetchAllProducts = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:8080/api/products', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
+      const response = await productsAPI.getAll();
       console.log("All products in database:", response.data);
 
       // Check if any products have supplierId that matches user.id

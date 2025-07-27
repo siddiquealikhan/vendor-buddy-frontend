@@ -13,7 +13,7 @@ import {
 } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
 import Header from '../components/Header'
-import axios from 'axios'
+import { productsAPI } from '../utils/api'
 
 const Home = ({ cart, setCart }) => {
   const { user } = useAuth()
@@ -80,15 +80,14 @@ const Home = ({ cart, setCart }) => {
       setLoading(true)
       setError(null)
       try {
-        // Build API URL with location parameters if available
-        let apiUrl = 'http://localhost:8080/api/products?page=0&size=100'
+        // Use productsAPI instead of hardcoded URL
+        const params = { page: 0, size: 100 };
         if (userLocation.lat && userLocation.lng) {
-          apiUrl += `&userLat=${userLocation.lat}&userLng=${userLocation.lng}`
+          params.userLat = userLocation.lat;
+          params.userLng = userLocation.lng;
         }
-
-        const res = await fetch(apiUrl)
-        if (!res.ok) throw new Error('Failed to fetch products')
-        const data = await res.json()
+        const res = await productsAPI.getAll(params);
+        const data = res.data;
         // Defensive: ensure products is always an array
         if (Array.isArray(data)) {
           setProducts(data)
@@ -100,8 +99,7 @@ const Home = ({ cart, setCart }) => {
           setProducts([])
         }
       } catch (err) {
-        setError(err.message)
-        setProducts([])
+        setError('Failed to fetch products')
       } finally {
         setLoading(false)
       }
